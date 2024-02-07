@@ -68,5 +68,22 @@
             format = "qcow";
           };
         });
+      devShells = forAllSystems ({ pkgs }: 
+        let flakepkgs = self.packages.${pkgs.system};
+        in rec {
+          default = pkgs.mkShell {
+            name = "default";
+            buildInputs = with self.packages.${pkgs.system}; [
+              libvfn xnvme xnvme-py
+            ];
+            LD_LIBRARY_PATH = with self.packages.${pkgs.system}; [
+              "${flakepkgs.libvfn.out}/lib"
+              "${flakepkgs.xnvme.out}/lib"
+            ];
+            shellHook = ''
+              echo "Welcome to the development environment"
+            '';
+          }; 
+        });
     };
 }
