@@ -1,0 +1,24 @@
+diff '--color=auto' -ur xnvme-0.7.4.orig/xnvme/ctypes_bindings/library_loader.py xnvme-0.7.4/xnvme/ctypes_bindings/library_loader.py
+--- xnvme-0.7.4.orig/xnvme/ctypes_bindings/library_loader.py	2024-02-03 23:35:24.000000000 +0100
++++ xnvme-0.7.4/xnvme/ctypes_bindings/library_loader.py	2024-02-06 11:21:38.899698457 +0100
+@@ -47,19 +47,4 @@
+ def load():
+     """Dynamically load the xNVMe shared library"""
+ 
+-    path = os.getenv("XNVME_LIBRARY_PATH", None)
+-    if path:
+-        try:
+-            return ctypes.CDLL(path)
+-        except OSError:
+-            pass
+-
+-    for spath in search_paths():
+-        try:
+-            lib = ctypes.CDLL(spath)
+-            if lib:
+-                return lib
+-        except OSError:
+-            continue
+-
+-    return None
++    return ctypes.CDLL("@libxnvme@")
